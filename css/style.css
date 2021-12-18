@@ -41,11 +41,12 @@ main {
     grid-template-columns: auto;
     grid-template-rows: auto;
     grid-template-areas:
-        "memc  memp  divide  multiply"
-        "seven eight nine    minus"
-        "four  five  six     plus"
-        "one   two   three   equals"
-        "zero  zero  decimal equals"
+        "memrc  memsv   undo     clear"
+        "sqrt   square  divide   multiply"
+        "seven  eight   nine     plus"
+        "four   five    six      minus"
+        "one    two     three    equals"
+        "zero   zero    decimal  equals"
 }
 
 .calc-button {
@@ -57,21 +58,21 @@ main {
     grid-area: history;
 }
 
-#memclear-button { 
-    grid-area: memc; 
-} 
+#memrecall-button { 
+    grid-area: memrc;
+}
 
-#memplus-button { 
-    grid-area: memp; 
-} 
+#memsave-button { 
+    grid-area: memsv; 
+}
 
-#divide-button { 
-    grid-area: divide; 
-} 
+#undo-button {
+    grid-area: undo;
+}
 
-#multiply-button { 
-    grid-area: multiply; 
-} 
+#clear-button {
+    grid-area: clear;
+}
 
 #seven-button { 
     grid-area: seven; 
@@ -85,10 +86,6 @@ main {
     grid-area: nine; 
 } 
 
-#minus-button { 
-    grid-area: minus; 
-} 
-
 #four-button { 
     grid-area: four; 
 } 
@@ -99,10 +96,6 @@ main {
 
 #six-button { 
     grid-area: six; 
-} 
-
-#plus-button { 
-    grid-area: plus; 
 } 
 
 #one-button { 
@@ -124,6 +117,30 @@ main {
 #decimal-button { 
     grid-area: decimal; 
 } 
+
+#divide-button { 
+    grid-area: divide; 
+} 
+
+#multiply-button { 
+    grid-area: multiply; 
+} 
+
+#minus-button { 
+    grid-area: minus; 
+} 
+
+#plus-button { 
+    grid-area: plus; 
+} 
+
+#sqrt-button {
+    grid-area: sqrt;
+}
+
+#square-button {
+    grid-area: square;
+}
 
 #equals-button { 
     grid-area: equals; 
