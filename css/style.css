@@ -1,0 +1,130 @@
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+    }
+
+main {
+    width: 100vw;
+    height: 100vh;
+}
+
+#calculator-container {
+    border: 1px solid black;
+    width: 90%;
+    height: 90%;
+
+    display: grid;
+    grid-template-columns: 8fr 1fr;
+    grid-template-rows: 1fr 7fr;
+    grid-template-areas:
+        "display display"
+        "buttons history";
+}
+
+#calculator-display-container {
+    border: 1px solid black;
+    grid-area: display;
+}
+
+
+#calculator-buttons-container {
+    border: 1px solid black;
+    grid-area: buttons;
+
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "memc  memp  divide  multiply"
+        "seven eight nine    minus"
+        "four  five  six     plus"
+        "one   two   three   equals"
+        "zero  zero  decimal equals"
+}
+
+.calc-button {
+    border: 1px solid black;
+}
+
+#calculator-history-container {
+    border: 1px solid black;
+    grid-area: history;
+}
+
+#memclear-button { 
+    grid-area: memc; 
+} 
+
+#memplus-button { 
+    grid-area: memp; 
+} 
+
+#divide-button { 
+    grid-area: divide; 
+} 
+
+#multiply-button { 
+    grid-area: multiply; 
+} 
+
+#seven-button { 
+    grid-area: seven; 
+} 
+
+#eight-button { 
+    grid-area: eight; 
+} 
+
+#nine-button { 
+    grid-area: nine; 
+} 
+
+#minus-button { 
+    grid-area: minus; 
+} 
+
+#four-button { 
+    grid-area: four; 
+} 
+
+#five-button { 
+    grid-area: five; 
+} 
+
+#six-button { 
+    grid-area: six; 
+} 
+
+#plus-button { 
+    grid-area: plus; 
+} 
+
+#one-button { 
+    grid-area: one; 
+} 
+
+#two-button { 
+    grid-area: two; 
+} 
+
+#three-button { 
+    grid-area: three; 
+} 
+
+#zero-button { 
+    grid-area: zero; 
+} 
+
+#decimal-button { 
+    grid-area: decimal; 
+} 
+
+#equals-button { 
+    grid-area: equals; 
+}
