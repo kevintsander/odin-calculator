@@ -12,6 +12,10 @@ html {
 main {
     width: 100vw;
     height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #calculator-container {
@@ -30,6 +34,10 @@ main {
 #calculator-display-container {
     border: 1px solid black;
     grid-area: display;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 
@@ -43,9 +51,9 @@ main {
     grid-template-areas:
         "memrc  memsv   undo     clear"
         "sqrt   square  divide   multiply"
-        "seven  eight   nine     plus"
-        "four   five    six      minus"
-        "one    two     three    equals"
+        "seven  eight   nine     minus"
+        "four   five    six      plus"
+        "one    two     three    plus"
         "zero   zero    decimal  equals"
 }
 
