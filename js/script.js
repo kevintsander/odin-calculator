@@ -89,7 +89,7 @@ function calculateResult() {
 
         let historyElement = {leftNum: calcLeftNum, rightNum: rightNum, operator: calcOperator, result: result, displayResult: displayResult};
         calcResultHistory.push(historyElement);
-        console.table(historyElement);
+        console.table(calcResultHistory);
 
         pDisplay.textContent = displayResult;
         calcInputOverwrite = true;
@@ -99,38 +99,33 @@ function calculateResult() {
     }
 }
 
-function updateCalcKeydown(e) {
-    if (/^[1234567890.]$/.test(e.key)) {
-        addDisplayDigit(e.key);
-        console.log(e.key);
-        e.preventDefault();
-    }
-    else if (/^[+\-\*\/]$/.test(e.key)) {
-        setOperator(convertKeyToOperator(e.key));
-        e.preventDefault();
-    }
-    else if (e.key == "=" || e.key == "Enter") {
-        calculateResult();
-        e.preventDefault();
-    }
-    else if (e.key == "Backspace") {
-        removeLastDisplayDigit();
-        e.preventDefault();
+function convertTextToOperator(text) {
+    switch (text) {
+        case "plus":
+            return "+";
+        case "minus":
+            return "-";
+        case "multiply":
+            return "*";
+        case "divide":
+            return "/";
     }
 }
 
-
-function convertKeyToOperator(key) {
-    switch (key) {
-        case "+":
-            return "plus";
-        case "-":
-            return "minus";
-        case "*":
-            return "multiply";
-        case "/":
-            return "divide";
+function updateCalcKeydown(e) {
+    if (/^[1234567890.]$/.test(e.key)) {
+        addDisplayDigit(e.key);
     }
+    else if (/^[+\-\*\/]$/.test(e.key)) {
+        setOperator(e.key);
+    }
+    else if (e.key == "=" || e.key == "Enter") {
+        calculateResult();
+    }
+    else if (e.key == "Backspace") {
+        removeLastDisplayDigit();
+    }
+    e.preventDefault();
 }
 
 /* Math */
@@ -138,16 +133,16 @@ function convertKeyToOperator(key) {
 function operate(thisOperator, a, b) {
     let result;
     switch (thisOperator) {
-        case "plus":
+        case "+":
             result = add(a, b);
             break;
-        case "minus":
+        case "-":
             result = subtract(a, b);
             break;
-        case "multiply":
+        case "*":
             result = multiply(a, b);
             break;
-        case "divide":
+        case "/":
             result = divide(a, b);
             break;
     }
@@ -200,7 +195,7 @@ numButtons.forEach(button => button.addEventListener('click', () => addDisplayDi
 decButton.addEventListener('click', () => addDisplayDigit('.'));
 
 // operator buttons
-operButtons.forEach(button => button.addEventListener('click', () => setOperator(button.getAttribute('data-oper'))));
+operButtons.forEach(button => button.addEventListener('click', () => setOperator(convertTextToOperator(button.getAttribute('data-oper')))));
 
 // equals buton
 equalsButton.addEventListener('click', calculateResult);
