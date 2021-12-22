@@ -6,6 +6,7 @@ const equalsButton = document.querySelector('#equals-button');
 const decButton = document.querySelector('#decimal-button');
 const clearButton = document.querySelector('#clear-button');
 
+const maxDisplayChars = 12;
 let operator;
 let leftNum;
 let allowDisplayOverwrite = true;   //allows display overwrite instead of append
@@ -51,7 +52,7 @@ function addDisplayDigit(input) {
     }
 
     // needs to be number or decimal and limit to 12 chars
-    if (/[1234567890.]/.test(input) && displayNum.toString().length < 12) {
+    if (/[1234567890.]/.test(input) && displayNum.toString().length < maxDisplayChars) {
 
         if (displayNum == "0" && input != ".") {
             // if current number is zero, set directly to number
@@ -83,8 +84,7 @@ function removeLastDisplayDigit() {
 function getResult() {
     if (operator && leftNum) {
         let rightNum = getDisplayNum();
-        let result = operate(operator, leftNum, rightNum);
-        //console.log(`Operator: ${operator}\nLeft: ${leftNum}\nRight: ${rightNum}\nResult: ${result}`);
+        let result = getMaxLengthValueString(operate(operator, leftNum, rightNum), maxDisplayChars);
         pDisplay.textContent = result;
         allowDisplayOverwrite = true;
 
@@ -92,6 +92,23 @@ function getResult() {
         leftNum = null;
     }
 }
+
+function updateCalcKeydown(e) {
+    if (/[1234567890.]/.test(e.key)) {
+        addDisplayDigit(e.key);
+    }
+    else if (/[+\-\*\/]/.test(e.key)) {
+        setOperator(convertKeyToOperator(e.key));
+    }
+    else if (e.key == "=" || e.key == "Enter") {
+        getResult();
+    }
+    else if (e.key == "Backspace") {
+        removeLastDisplayDigit();
+    }
+    e.preventDefault();
+}
+
 
 function convertKeyToOperator(key) {
     switch (key) {
@@ -143,6 +160,26 @@ function subtract(a, b) {
     return a - b;
 }
 
+function getMaxLengthValueString(value, max) {
+    let newValueStr = "" + value;
+    if (newValueStr.length > max) {
+        newValueStr = value.toPrecision(max);
+        console.log(`${newValueStr} ${newValueStr.length}`);
+
+        if (newValueStr.length > max) {
+            let expLocation = newValueStr.indexOf('e');
+            let decimalLocation = newValueStr.indexOf('.');
+            if (expLocation > -1) {
+                // before the e should be the maximum length minus the number of digits in the exponent
+                newValueStr = newValueStr.substring(0, max - (newValueStr.length - expLocation)) + newValueStr.substring(expLocation);
+            } else if (decimalLocation > -1) {
+                // if there's just a decimal, take the precision down by one to account
+                newValueStr = value.toPrecision(max - 1);
+            }
+        }
+    }
+    return newValueStr;
+}
 
 
 /* handle button click events */
@@ -161,20 +198,6 @@ equalsButton.addEventListener('click', getResult);
 clearButton.addEventListener('click', clear);
 
 /* handle key press events */
-function updateCalcKeydown(e) {
-    if (/[1234567890.]/.test(e.key)) {
-        addDisplayDigit(e.key);
-    }
-    else if (/[+\-\*\/]/.test(e.key)) {
-        setOperator(convertKeyToOperator(e.key));
-    }
-    else if (e.key == "=" || e.key == "Enter") {
-        getResult();
-    }
-    else if (e.key == "Backspace") {
-        removeLastDisplayDigit();
-    }
-    e.preventDefault();
-}
+
 
 window.addEventListener('keydown', updateCalcKeydown);
