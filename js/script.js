@@ -8,15 +8,14 @@ const clearButton = document.querySelector('#clear-button');
 
 let operator;
 let leftNum;
-let allowDisplayOverwrite = true;
+let allowDisplayOverwrite = true;   //allows display overwrite instead of append
 
 
-// if equals or operator pressed while operator is stored, result is stored value (operator) display value
-
-// display value allow overwrite
-
-// when operator is pressed, store display number & operator, & set display value to overwrite
 function setOperator(newOperator) {
+    //if there's already an operator, get the result
+    if (operator) {
+        getResult();
+    }
     operator = newOperator;
     leftNum = getDisplayNum();
     allowDisplayOverwrite = true;
@@ -70,16 +69,40 @@ function addDisplayDigit(input) {
     }
 };
 
+function removeLastDisplayDigit() {
+    let displayNum = pDisplay.textContent;
+    if (displayNum.length <= 1) {
+        displayNum = "0";
+    }
+    else {
+        displayNum = displayNum.slice(0, -1);
+    }
+    pDisplay.textContent = displayNum;
+}
+
 function getResult() {
     if (operator && leftNum) {
         let rightNum = getDisplayNum();
         let result = operate(operator, leftNum, rightNum);
-        console.log(`Operator: ${operator}\nLeft: ${leftNum}\nRight: ${rightNum}\nResult: ${result}`);
+        //console.log(`Operator: ${operator}\nLeft: ${leftNum}\nRight: ${rightNum}\nResult: ${result}`);
         pDisplay.textContent = result;
         allowDisplayOverwrite = true;
 
         operator = null;
         leftNum = null;
+    }
+}
+
+function convertKeyToOperator(key) {
+    switch (key) {
+        case "+":
+            return "plus";
+        case "-":
+            return "minus";
+        case "*":
+            return "multiply";
+        case "/":
+            return "divide";
     }
 }
 
@@ -124,34 +147,34 @@ function subtract(a, b) {
 
 /* handle button click events */
 
-// number buttons
-numButtons.forEach(button => button.addEventListener('click', () => {
-    addDisplayDigit(button.textContent);
-}));
-
-// decimal button
-decButton.addEventListener('click', () => {
-    addDisplayDigit('.');
-});
+// number/decimal buttons
+numButtons.forEach(button => button.addEventListener('click', () => addDisplayDigit(button.textContent)));
+decButton.addEventListener('click', () => addDisplayDigit('.'));
 
 // operator buttons
-operButtons.forEach(button => button.addEventListener('click', () => {
-    // if there's already an operator, operate
-    if (operator) {
-        getResult();
-    }
-    setOperator(button.getAttribute('data-oper'));
-}));
+operButtons.forEach(button => button.addEventListener('click', () => setOperator(button.getAttribute('data-oper'))));
 
 // equals buton
-equalsButton.addEventListener('click', () => {
-    if (operator) {
-        getResult();
-    }
-});
+equalsButton.addEventListener('click', getResult);
 
+// clear button
 clearButton.addEventListener('click', clear);
 
 /* handle key press events */
+function updateCalcKeydown(e) {
+    if (/[1234567890.]/.test(e.key)) {
+        addDisplayDigit(e.key);
+    }
+    else if (/[+\-\*\/]/.test(e.key)) {
+        setOperator(convertKeyToOperator(e.key));
+    }
+    else if (e.key == "=" || e.key == "Enter") {
+        getResult();
+    }
+    else if (e.key == "Backspace") {
+        removeLastDisplayDigit();
+    }
+    e.preventDefault();
+}
 
-// get keypress event
+window.addEventListener('keydown', updateCalcKeydown);
