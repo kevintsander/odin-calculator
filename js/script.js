@@ -6,26 +6,26 @@ const equalsButton = document.querySelector('#equals-button');
 const decButton = document.querySelector('#decimal-button');
 const clearButton = document.querySelector('#clear-button');
 
-const maxDisplayChars = 12;
-let operator;
-let leftNum;
-let allowDisplayOverwrite = true;   //allows display overwrite instead of append
-
+const calcDisplayMaxChars = 12;
+let calcOperator;
+let calcLeftNum;
+let calcInputOverwrite = true;   //allows display overwrite instead of append
+let calcResultHistory = {};
 
 function setOperator(newOperator) {
     //if there's already an operator, get the result
-    if (operator) {
+    if (calcOperator) {
         getResult();
     }
-    operator = newOperator;
-    leftNum = getDisplayNum();
-    allowDisplayOverwrite = true;
+    calcOperator = newOperator;
+    calcLeftNum = getDisplayNum();
+    calcInputOverwrite = true;
 }
 
 function clear() {
-    operator = null;
-    leftNum = null;
-    allowDisplayOverwrite = true;
+    calcOperator = null;
+    calcLeftNum = null;
+    calcInputOverwrite = true;
     addDisplayDigit('0');
 }
 
@@ -43,16 +43,16 @@ function addDisplayDigit(input) {
     let displayNum;
 
     // first check if we are overwriting or not
-    if (allowDisplayOverwrite === true) {
+    if (calcInputOverwrite === true) {
         displayNum = "0";
-        allowDisplayOverwrite = false;
+        calcInputOverwrite = false;
     }
     else {
         displayNum = pDisplay.textContent;
     }
 
     // needs to be number or decimal and limit to 12 chars
-    if (/[1234567890.]/.test(input) && displayNum.toString().length < maxDisplayChars) {
+    if (/[1234567890.]/.test(input) && displayNum.toString().length < calcDisplayMaxChars) {
 
         if (displayNum == "0" && input != ".") {
             // if current number is zero, set directly to number
@@ -82,14 +82,15 @@ function removeLastDisplayDigit() {
 }
 
 function getResult() {
-    if (operator && leftNum) {
+    if (calcOperator && calcLeftNum) {
         let rightNum = getDisplayNum();
-        let result = getMaxLengthValueString(operate(operator, leftNum, rightNum), maxDisplayChars);
-        pDisplay.textContent = result;
-        allowDisplayOverwrite = true;
+        let result = operate(calcOperator, calcLeftNum, rightNum);
+        let displayResult = getMaxLengthValueString(result, calcDisplayMaxChars);
+        pDisplay.textContent = displayResult;
+        calcInputOverwrite = true;
 
-        operator = null;
-        leftNum = null;
+        calcOperator = null;
+        calcLeftNum = null;
     }
 }
 
