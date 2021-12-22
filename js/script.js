@@ -10,12 +10,12 @@ const calcDisplayMaxChars = 12;
 let calcOperator;
 let calcLeftNum;
 let calcInputOverwrite = true;   //allows display overwrite instead of append
-let calcResultHistory = {};
+let calcResultHistory = [];
 
 function setOperator(newOperator) {
     //if there's already an operator, get the result
     if (calcOperator) {
-        getResult();
+        calculateResult();
     }
     calcOperator = newOperator;
     calcLeftNum = getDisplayNum();
@@ -81,11 +81,16 @@ function removeLastDisplayDigit() {
     pDisplay.textContent = displayNum;
 }
 
-function getResult() {
+function calculateResult() {
     if (calcOperator && calcLeftNum) {
         let rightNum = getDisplayNum();
         let result = operate(calcOperator, calcLeftNum, rightNum);
         let displayResult = getMaxLengthValueString(result, calcDisplayMaxChars);
+
+        let historyElement = {leftNum: calcLeftNum, rightNum: rightNum, operator: calcOperator, result: result, displayResult: displayResult};
+        calcResultHistory.push(historyElement);
+        console.table(historyElement);
+
         pDisplay.textContent = displayResult;
         calcInputOverwrite = true;
 
@@ -95,19 +100,23 @@ function getResult() {
 }
 
 function updateCalcKeydown(e) {
-    if (/[1234567890.]/.test(e.key)) {
+    if (/^[1234567890.]$/.test(e.key)) {
         addDisplayDigit(e.key);
+        console.log(e.key);
+        e.preventDefault();
     }
-    else if (/[+\-\*\/]/.test(e.key)) {
+    else if (/^[+\-\*\/]$/.test(e.key)) {
         setOperator(convertKeyToOperator(e.key));
+        e.preventDefault();
     }
     else if (e.key == "=" || e.key == "Enter") {
-        getResult();
+        calculateResult();
+        e.preventDefault();
     }
     else if (e.key == "Backspace") {
         removeLastDisplayDigit();
+        e.preventDefault();
     }
-    e.preventDefault();
 }
 
 
@@ -194,7 +203,7 @@ decButton.addEventListener('click', () => addDisplayDigit('.'));
 operButtons.forEach(button => button.addEventListener('click', () => setOperator(button.getAttribute('data-oper'))));
 
 // equals buton
-equalsButton.addEventListener('click', getResult);
+equalsButton.addEventListener('click', calculateResult);
 
 // clear button
 clearButton.addEventListener('click', clear);
