@@ -163,9 +163,10 @@ function subtract(a, b) {
 
 function getMaxLengthValueString(value, max) {
     let newValueStr = "" + value;
+
+    // if longer than the length, we might need to display scientific notation
     if (newValueStr.length > max) {
         newValueStr = value.toPrecision(max);
-        console.log(`${newValueStr} ${newValueStr.length}`);
 
         if (newValueStr.length > max) {
             let expLocation = newValueStr.indexOf('e');
