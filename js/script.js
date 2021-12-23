@@ -5,6 +5,7 @@ const operButtons = document.querySelectorAll('.oper-button');
 const equalsButton = document.querySelector('#equals-button');
 const decButton = document.querySelector('#decimal-button');
 const clearButton = document.querySelector('#clear-button');
+const calcHistoryContainer = document.querySelector('#calculator-history-container')
 
 const calcDisplayMaxChars = 12;
 let calcOperator;
@@ -89,13 +90,41 @@ function calculateResult() {
 
         let historyElement = {leftNum: calcLeftNum, rightNum: rightNum, operator: calcOperator, result: result, displayResult: displayResult};
         calcResultHistory.push(historyElement);
-        console.table(calcResultHistory);
+        displayHistory();
 
         pDisplay.textContent = displayResult;
         calcInputOverwrite = true;
 
         calcOperator = null;
         calcLeftNum = null;
+    }
+}
+
+function displayHistory() {
+    calcHistoryContainer.textContent = "";
+    for (const historyItem of calcResultHistory) {
+        const historyItemContainer = document.createElement('div');
+        historyItemContainer.classList.add('historyItem');
+
+        const historyLeftNumContainer = document.createElement('div');
+        historyLeftNumContainer.textContent = historyItem.leftNum;
+
+        const historyRightNumContainer = document.createElement('div');
+        historyRightNumContainer.textContent = historyItem.rightNum;
+
+        const historyOperatorContainer = document.createElement('div');
+        historyOperatorContainer.textContent = historyItem.operator;
+
+        const historyResultContainer = document.createElement('div');
+        historyResultContainer.textContent = `= ${historyItem.displayResult}`;
+
+        historyItemContainer.appendChild(historyLeftNumContainer);
+        historyItemContainer.appendChild(historyOperatorContainer);
+        historyItemContainer.appendChild(historyRightNumContainer);
+        historyItemContainer.appendChild(historyRightNumContainer);
+        historyItemContainer.appendChild(historyResultContainer);
+
+        calcHistoryContainer.appendChild(historyItemContainer);
     }
 }
 
@@ -204,6 +233,4 @@ equalsButton.addEventListener('click', calculateResult);
 clearButton.addEventListener('click', clear);
 
 /* handle key press events */
-
-
 window.addEventListener('keydown', updateCalcKeydown);
