@@ -19,9 +19,9 @@ main {
 }
 
 #calculator-container {
-    border: 1px solid black;
-    width: 90%;
-    height: 90%;
+    width: 80%;
+    height: 80%;
+    padding: 20px;
 
     display: grid;
     grid-template-columns: 8fr 1fr;
@@ -29,15 +29,27 @@ main {
     grid-template-areas:
         "display display"
         "buttons history";
+    gap: 10px;
+
+    background-color: hsl(240, 80%, 20%);
 }
 
 #calculator-display-container {
-    border: 1px solid black;
+    background-color: hsl(240, 0%, 80%);
+    color: hsl(240, 0%, 10%);
+    font-size: calc(0.75em + 9vmin);
     grid-area: display;
+    padding: 0;
 
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
+}
+
+#calculator-display-container > p {
+    padding: 0;
+    margin: 0;
 }
 
 
@@ -62,7 +74,8 @@ main {
 }
 
 #calculator-history-container {
-    border: 1px solid black;
+    background-color: hsl(240, 0%, 80%);
+    color: hsl(240, 0%, 10%);
     grid-area: history;
 }
 
@@ -147,7 +160,7 @@ main {
 }
 
 /* history */
-.historyItem {
+.history-item {
     display: flex;
     flex-direction: column;
     align-items: center;

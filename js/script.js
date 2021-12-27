@@ -118,7 +118,7 @@ function displayHistory() {
     calcHistoryContainer.textContent = "";
     for (const historyItem of calcResultHistory) {
         const historyItemContainer = document.createElement('div');
-        historyItemContainer.classList.add('historyItem');
+        historyItemContainer.classList.add('history-item');
 
         const historyEquationContainer = document.createElement('div');
         historyEquationContainer.textContent = `${historyItem.leftNum} ${historyItem.operator} ${historyItem.leftNum} =`;
