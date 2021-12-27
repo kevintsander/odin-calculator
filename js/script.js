@@ -5,13 +5,17 @@ const operButtons = document.querySelectorAll('.oper-button');
 const equalsButton = document.querySelector('#equals-button');
 const decButton = document.querySelector('#decimal-button');
 const clearButton = document.querySelector('#clear-button');
-const calcHistoryContainer = document.querySelector('#calculator-history-container')
+const undoButton = document.querySelector("#undo-button");
+const memSaveButon = document.querySelector("#memsave-button");
+const memRecallButton = document.querySelector("#memrecall-button");
+const calcHistoryContainer = document.querySelector('#calculator-history-container');
 
 const calcDisplayMaxChars = 12;
 let calcOperator;
 let calcLeftNum;
 let calcInputOverwrite = true;   //allows display overwrite instead of append
 let calcResultHistory = [];
+let calcMemoryNum;
 
 function setOperator(newOperator) {
     //if there's already an operator, get the result
@@ -85,7 +89,8 @@ function removeLastDisplayDigit() {
 function calculateResult() {
     if (calcOperator && calcLeftNum) {
         let rightNum = getDisplayNum();
-        let result = operate(calcOperator, calcLeftNum, rightNum);
+        let result;
+        result = operate(calcOperator, calcLeftNum, rightNum);
         let displayResult = getMaxLengthValueString(result, calcDisplayMaxChars);
 
         let historyElement = {leftNum: calcLeftNum, rightNum: rightNum, operator: calcOperator, result: result, displayResult: displayResult};
@@ -100,28 +105,28 @@ function calculateResult() {
     }
 }
 
+function undolastCalc() {
+    if (calcResultHistory.length > 0) {
+        pDisplay.textContent = calcResultHistory.pop().result;
+        calcOperator = null;
+        calcLeftNum = null;
+        calcInputOverwrite = false;
+    }
+}
+
 function displayHistory() {
     calcHistoryContainer.textContent = "";
     for (const historyItem of calcResultHistory) {
         const historyItemContainer = document.createElement('div');
         historyItemContainer.classList.add('historyItem');
 
-        const historyLeftNumContainer = document.createElement('div');
-        historyLeftNumContainer.textContent = historyItem.leftNum;
-
-        const historyRightNumContainer = document.createElement('div');
-        historyRightNumContainer.textContent = historyItem.rightNum;
-
-        const historyOperatorContainer = document.createElement('div');
-        historyOperatorContainer.textContent = historyItem.operator;
+        const historyEquationContainer = document.createElement('div');
+        historyEquationContainer.textContent = `${historyItem.leftNum} ${historyItem.operator} ${historyItem.leftNum} =`;
 
         const historyResultContainer = document.createElement('div');
-        historyResultContainer.textContent = `= ${historyItem.displayResult}`;
+        historyResultContainer.textContent = `${historyItem.displayResult}`;
 
-        historyItemContainer.appendChild(historyLeftNumContainer);
-        historyItemContainer.appendChild(historyOperatorContainer);
-        historyItemContainer.appendChild(historyRightNumContainer);
-        historyItemContainer.appendChild(historyRightNumContainer);
+        historyItemContainer.appendChild(historyEquationContainer);
         historyItemContainer.appendChild(historyResultContainer);
 
         calcHistoryContainer.appendChild(historyItemContainer);
@@ -138,6 +143,8 @@ function convertTextToOperator(text) {
             return "*";
         case "divide":
             return "/";
+        default:
+            return text;
     }
 }
 
@@ -174,6 +181,7 @@ function operate(thisOperator, a, b) {
         case "/":
             result = divide(a, b);
             break;
+
     }
     return result;
 }
@@ -231,6 +239,23 @@ equalsButton.addEventListener('click', calculateResult);
 
 // clear button
 clearButton.addEventListener('click', clear);
+
+// undo button
+undoButton.addEventListener('click', undolastCalc);
+
+// memory
+memSaveButon.addEventListener('click', () => {
+    let newMem = getDisplayNum()
+    if (newMem) {
+        calcMemoryNum = memNum;
+    }
+});
+
+memRecallButton.addEventListener('click', () => {
+    if (calcMemoryNum) {
+        pDisplay.textContent = calcMemoryNum;
+    }
+})
 
 /* handle key press events */
 window.addEventListener('keydown', updateCalcKeydown);
