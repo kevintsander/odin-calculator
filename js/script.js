@@ -1,5 +1,6 @@
 // document parts
 const pDisplay = document.querySelector("#calculator-display-container > p");
+const calcButtons = document.querySelectorAll('.calc-button'); // all calculator buttons
 const numButtons = document.querySelectorAll('.num-button');
 const operButtons = document.querySelectorAll('.oper-button');
 const equalsButton = document.querySelector('#equals-button');
@@ -89,8 +90,7 @@ function removeLastDisplayDigit() {
 function calculateResult() {
     if (calcOperator && calcLeftNum) {
         let rightNum = getDisplayNum();
-        let result;
-        result = operate(calcOperator, calcLeftNum, rightNum);
+        let result = operate(calcOperator, calcLeftNum, rightNum);
         let displayResult = getMaxLengthValueString(result, calcDisplayMaxChars);
 
         let historyElement = {leftNum: calcLeftNum, rightNum: rightNum, operator: calcOperator, result: result, displayResult: displayResult};
@@ -108,6 +108,7 @@ function calculateResult() {
 function undolastCalc() {
     if (calcResultHistory.length > 0) {
         pDisplay.textContent = calcResultHistory.pop().result;
+        displayHistory();
         calcOperator = null;
         calcLeftNum = null;
         calcInputOverwrite = false;
@@ -121,7 +122,7 @@ function displayHistory() {
         historyItemContainer.classList.add('history-item');
 
         const historyEquationContainer = document.createElement('div');
-        historyEquationContainer.textContent = `${historyItem.leftNum} ${historyItem.operator} ${historyItem.leftNum} =`;
+        historyEquationContainer.textContent = `${historyItem.leftNum} ${historyItem.operator} ${historyItem.rightNum} =`;
 
         const historyResultContainer = document.createElement('div');
         historyResultContainer.textContent = `${historyItem.displayResult}`;
@@ -130,21 +131,6 @@ function displayHistory() {
         historyItemContainer.appendChild(historyResultContainer);
 
         calcHistoryContainer.appendChild(historyItemContainer);
-    }
-}
-
-function convertTextToOperator(text) {
-    switch (text) {
-        case "plus":
-            return "+";
-        case "minus":
-            return "-";
-        case "multiply":
-            return "*";
-        case "divide":
-            return "/";
-        default:
-            return text;
     }
 }
 
@@ -227,12 +213,20 @@ function getMaxLengthValueString(value, max) {
 
 /* handle button click events */
 
+// set all buttons to show active on click
+calcButtons.forEach(button => button.addEventListener('click', () => button.classList.add('calc-button-active')));
+
+// remove active class when transition ends
+calcButtons.forEach(button => button.addEventListener("transitionend", () => button.classList.remove('calc-button-active')));
+
+
 // number/decimal buttons
 numButtons.forEach(button => button.addEventListener('click', () => addDisplayDigit(button.textContent)));
+
 decButton.addEventListener('click', () => addDisplayDigit('.'));
 
 // operator buttons
-operButtons.forEach(button => button.addEventListener('click', () => setOperator(convertTextToOperator(button.getAttribute('data-oper')))));
+operButtons.forEach(button => button.addEventListener('click', () => setOperator(button.getAttribute('data-key'))));
 
 // equals buton
 equalsButton.addEventListener('click', calculateResult);
@@ -258,4 +252,8 @@ memRecallButton.addEventListener('click', () => {
 })
 
 /* handle key press events */
-window.addEventListener('keydown', updateCalcKeydown);
+window.addEventListener('keydown', (e) => {
+    updateCalcKeydown(e);
+    const keyButton = document.querySelector(`button[data-key='${e.key}']`);
+    keyButton.classList.add('calc-button-active');
+});
