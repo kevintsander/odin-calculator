@@ -40,15 +40,22 @@ main {
 
 #calculator-display-container {
     margin: 0 0 10px 0;
+    padding: 8px;
 
     grid-area: display;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     
+    font-size: 7vmin;
+    text-shadow: 1px 1px 3px hsla(0, 0%, 0%, 80%);
+}
+
+.digital-display {
     color: hsl(240, 0%, 10%);
     background-color: hsl(240, 0%, 80%);
-    font-size: 7vmin;
+    border-radius: 4px;
+    box-shadow: 1px 1px 3px hsla(0, 0%, 0%, 80%), 1px 1px 3px hsla(0, 0%, 0%, 80%) inset;
     font-family: 'Orbitron', sans-serif;
 }
 
@@ -65,8 +72,8 @@ main {
     grid-template-columns: auto;
     grid-template-rows: auto;
     grid-template-areas:
-        "memrc  memsv   clear    clear"
-        "undo   divide  multiply minus"
+        "memrc  undo    backsp   clear"
+        "memsv  divide  multiply minus"
         "seven  eight   nine     plus"
         "four   five    six      plus"
         "one    two     three    equals"
@@ -75,22 +82,42 @@ main {
 }
 
 .calc-button {
+    color:hsla(240, 0%, 20%, 80%);
     border: 1px solid black;
     border-radius: 4px;
+    box-shadow: 1px 1px 3px hsla(0, 0%, 0%, 80%);
     font-size: 3vw;
-    transition: all 0.2s ease;
+    transition: all 0.12s ease;
 }
 
 .calc-button-active {
     color: hsl(48, 100%, 50%);
     text-shadow: 0 0 5px hsl(48, 100%, 50%), 0 0 0 black;
-    scale: 0.95;
+    scale: 0.98;
 }
 
-#calculator-history-container {
-    background-color: hsl(240, 0%, 80%);
-    color: hsl(240, 0%, 10%);
-    grid-area: history;
+.oper-button {
+    background-color: hsl(36, 80%, 80%);
+}
+
+.oper-button:hover {
+    background-color: hsl(36, 80%, 70%);
+}
+
+.chg-button {
+    background-color: hsl(60, 40%, 80%);
+}
+
+.chg-button:hover {
+    background-color: hsl(60, 40%, 70%);
+}
+
+.mem-button {
+    background-color: hsl(270, 40%, 80%);
+}
+
+.mem-button:hover {
+    background-color: hsl(270, 40%, 70%);
 }
 
 #memrecall-button { 
@@ -107,6 +134,10 @@ main {
 
 #clear-button {
     grid-area: clear;
+}
+
+#backsp-button {
+    grid-area: backsp;
 }
 
 #seven-button { 
@@ -170,12 +201,40 @@ main {
 }
 
 #equals-button { 
-    grid-area: equals; 
+    grid-area: equals;
+    
+    background-color: hsl(120, 25%, 80%);
+}
+
+#equals-button:hover {
+    background-color: hsl(120, 25%, 70%);
 }
 
 /* history */
+#calculator-history-container {
+    padding: 2px;
+    grid-area: history;
+    text-shadow: 1px 1px 2px hsla(0, 0%, 0%, 80%);
+    overflow: hidden;
+}
+
 .history-item {
+    margin: 0;
+    padding: 0;
+    font-size: 1vw;
+    border-bottom: 1px solid hsla(0, 0%, 0%, 10%);
+
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.history-item:hover {
+    color: hsl(124, 40%, 80%);
+}
+
+.history-item-result {
+    margin: 0;
+    padding: 0;
+    font-size: 2.5vw;
 }

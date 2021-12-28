@@ -125,6 +125,7 @@ function displayHistory() {
         historyEquationContainer.textContent = `${historyItem.leftNum} ${historyItem.operator} ${historyItem.rightNum} =`;
 
         const historyResultContainer = document.createElement('div');
+        historyResultContainer.classList.add('history-item-result');
         historyResultContainer.textContent = `${historyItem.displayResult}`;
 
         historyItemContainer.appendChild(historyEquationContainer);
@@ -137,17 +138,20 @@ function displayHistory() {
 function updateCalcKeydown(e) {
     if (/^[1234567890.]$/.test(e.key)) {
         addDisplayDigit(e.key);
+        e.preventDefault();
     }
     else if (/^[+\-\*\/]$/.test(e.key)) {
         setOperator(e.key);
+        e.preventDefault();
     }
     else if (e.key == "=" || e.key == "Enter") {
         calculateResult();
+        e.preventDefault();
     }
     else if (e.key == "Backspace") {
         removeLastDisplayDigit();
+        e.preventDefault();
     }
-    e.preventDefault();
 }
 
 /* Math */
@@ -255,5 +259,5 @@ memRecallButton.addEventListener('click', () => {
 window.addEventListener('keydown', (e) => {
     updateCalcKeydown(e);
     const keyButton = document.querySelector(`button[data-key='${e.key}']`);
-    keyButton.classList.add('calc-button-active');
+    if (keyButton) keyButton.classList.add('calc-button-active');
 });

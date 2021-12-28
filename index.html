@@ -14,7 +14,7 @@
     
     <main>
         <div id="calculator-container">
-            <div id="calculator-display-container">
+            <div id="calculator-display-container" class="digital-display">
                 <p>0</p>
             </div>
             <div id="calculator-buttons-container">
@@ -22,15 +22,16 @@
                 <button id="memsave-button" class="calc-button mem-button">m+</button>
                 <button id="undo-button" class="calc-button chg-button">⟲</button>
                 <button id="clear-button" class="calc-button chg-button" data-key="Delete">clr</button>
+                <button id="backsp-button" class="calc-button chg-button" data-key="Backspace">←</button>
                 <button id="seven-button" class="calc-button num-button" data-key="7">7</button>
                 <button id="eight-button" class="calc-button num-button" data-key="8">8</button>
                 <button id="nine-button" class="calc-button num-button" data-key="9">9</button>
                 <button id="four-button" class="calc-button num-button" data-key="4">4</button>
                 <button id="five-button" class="calc-button num-button" data-key="5">5</button>
                 <button id="six-button" class="calc-button num-button" data-key="6">6</button>
-                <button id="one-button" class="calc-button num-button" data-key="7">1</button>
-                <button id="two-button" class="calc-button num-button" data-key="8">2</button>
-                <button id="three-button" class="calc-button num-button" data-key="9">3</button>
+                <button id="one-button" class="calc-button num-button" data-key="1">1</button>
+                <button id="two-button" class="calc-button num-button" data-key="2">2</button>
+                <button id="three-button" class="calc-button num-button" data-key="3">3</button>
                 <button id="zero-button" class="calc-button num-button" data-key="0">0</button>
                 <button id="divide-button" class="calc-button oper-button" data-key="/">÷</button>
                 <button id="multiply-button" class="calc-button oper-button" data-key="*">×</button>
@@ -40,7 +41,7 @@
                 <button id="equals-button" class="calc-button equals-button" data-key="=">=</button>
 
             </div>
-            <div id="calculator-history-container"></div>
+            <div id="calculator-history-container" class="digital-display"></div>
 
 
     <script src="js/script.js"></script>
