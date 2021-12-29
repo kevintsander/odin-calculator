@@ -26,8 +26,8 @@ function setOperator(newOperator) {
     if (currentEquationItem.operator) {
         calculateResult();
     }
-    currentEquationItem.operator = newOperator;
     currentEquationItem.left = getDisplayNum();
+    currentEquationItem.operator = newOperator;
     displayCurrentEquation();
 
     calcInputOverwrite = true;
@@ -98,8 +98,7 @@ function calculateResult() {
         calcResultHistory.push(currentEquationItem);
 
         resultDisplay.textContent = getMaxLengthValueString(currentEquationItem.result, calcDisplayMaxChars);
-        currentEquationItem = {};   //reset current equation
-        displayCurrentEquation();
+        setCurrentEquation();
         displayHistory();
 
         calcInputOverwrite = true;
@@ -111,7 +110,7 @@ function undolastCalc() {
     if (currentEquationItem.left) {
         // if we have a current equation, display the left num and reset
         resultDisplay.textContent = currentEquationItem.left;
-        currentEquationItem = {};
+        setCurrentEquation();
 
         calcInputOverwrite = false; // allow overwrite after undo since we might want to change the number
     }
@@ -119,9 +118,7 @@ function undolastCalc() {
         // if we havent started a new equation, remove the last equation from the history, & set display to right
         let lastEquationItem = calcResultHistory.pop();
         resultDisplay.textContent = lastEquationItem.right
-        currentEquationItem = {};
-        currentEquationItem.left = lastEquationItem.left
-        currentEquationItem.operator = lastEquationItem.operator;
+        setCurrentEquation(lastEquationItem.left, lastEquationItem.operator);
         displayHistory();
 
         calcInputOverwrite = false; // allow overwrite after undo since we might want to change the number
@@ -129,6 +126,12 @@ function undolastCalc() {
     else {
         resultDisplay.textContent = '0';
     }
+}
+
+function setCurrentEquation(left = null, operator = null) {
+    currentEquationItem = {};
+    currentEquationItem.left = left;
+    currentEquationItem.operator = operator;
     displayCurrentEquation();
 }
 
@@ -147,6 +150,12 @@ function displayHistory() {
         let historyItem = calcResultHistory[i];
         
         const historyItemContainer = document.createElement('div');
+
+        // add handler to set current equation to history
+        historyItemContainer.addEventListener('click', () => {
+            setCurrentEquation(historyItem.left, historyItem.operator);
+            resultDisplay.textContent = historyItem.right;
+        })
         historyItemContainer.classList.add('history-item');
 
         const historyEquationContainer = document.createElement('div');

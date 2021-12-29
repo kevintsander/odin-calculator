@@ -74,7 +74,6 @@ h1 {
     padding: 0;
     margin: 0;
     font-size: 1vw;
-    flex: 0.3;
 }
 
 #result-display {
@@ -82,7 +81,6 @@ h1 {
     margin: 0;
 
     font-size: 7vmin;
-    flex: 0.7;
 }
 
 #calculator-buttons-container {
@@ -241,7 +239,7 @@ h1 {
     display: flex;
     flex-direction: column;
 
-    font-size: 0.8vw;
+    font-size: 0.8vmin;
 }
 
 .history-item {
@@ -277,3 +275,9 @@ h1 {
     font-size: 2em;
 }
 
+footer {
+    width: 100%;
+    background-color: hsla(0, 0%, 80%, 90%);
+    text-align: center;
+    font-size: 16px;
+}
