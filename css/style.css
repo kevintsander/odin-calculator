@@ -266,7 +266,7 @@ h1 {
 
 .history-item:hover {
     top: 2px;
-    color: hsl(120, 80%, 40%)
+    color: hsl(120, 80%,30%)
 }
 
 .history-item-result {

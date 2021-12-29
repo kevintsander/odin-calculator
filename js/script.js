@@ -17,15 +17,13 @@ const calcDisplayMaxChars = 12;
 const maxHistoryDisplayItems = 10;
 let currentEquationItem = {};
 
-let calcOperator;
-let calcLeftNum;
 let calcInputOverwrite = true;   //allows display overwrite instead of append
 let calcResultHistory = [];
 let calcMemoryNum;
 
 function setOperator(newOperator) {
     //if there's already an operator, get the result
-    if (calcOperator) {
+    if (currentEquationItem.operator) {
         calculateResult();
     }
     currentEquationItem.operator = newOperator;
@@ -275,7 +273,7 @@ undoButton.addEventListener('click', undolastCalc);
 memSaveButon.addEventListener('click', () => {
     let newMem = getDisplayNum()
     if (newMem) {
-        calcMemoryNum = memNum;
+        calcMemoryNum = newMem;
     }
 });
 
