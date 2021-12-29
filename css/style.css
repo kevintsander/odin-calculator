@@ -101,6 +101,7 @@ h1 {
 }
 
 .calc-button {
+    background-color: hsl(0, 0%, 94%);
     color:hsla(240, 0%, 20%, 80%);
     border: 1px solid black;
     border-radius: 4px;
