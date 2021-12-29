@@ -96,17 +96,14 @@ function calculateResult() {
     if (currentEquationItem.left && currentEquationItem.operator) {
         currentEquationItem.right = getDisplayNum();
         currentEquationItem.result = operate(currentEquationItem.operator, currentEquationItem.left, currentEquationItem.right);
-
         calcResultHistory.push(currentEquationItem);
+
+        resultDisplay.textContent = getMaxLengthValueString(currentEquationItem.result, calcDisplayMaxChars);
         currentEquationItem = {};   //reset current equation
         displayCurrentEquation();
         displayHistory();
 
-        resultDisplay.textContent = getMaxLengthValueString(result, calcDisplayMaxChars);
         calcInputOverwrite = true;
-
-        calcOperator = null;
-        calcLeftNum = null;
     }
 }
 
@@ -116,6 +113,8 @@ function undolastCalc() {
         // if we have a current equation, display the left num and reset
         resultDisplay.textContent = currentEquationItem.left;
         currentEquationItem = {};
+
+        calcInputOverwrite = false; // allow overwrite after undo since we might want to change the number
     }
     else if (calcResultHistory.length > 0) {
         // if we havent started a new equation, remove the last equation from the history, & set display to right
@@ -124,13 +123,15 @@ function undolastCalc() {
         currentEquationItem = {};
         currentEquationItem.left = lastEquationItem.left
         currentEquationItem.operator = lastEquationItem.operator;
+        displayHistory();
+        
+        calcInputOverwrite = false; // allow overwrite after undo since we might want to change the number
     }
     displayCurrentEquation();
-    calcInputOverwrite = false; // allow overwrite after undo since we might want to change the number
 }
 
 function displayCurrentEquation() {
-    equationDisplay.textContent = `${currentEquationItem.left} ${currentEquationItem.operator}`;
+    equationDisplay.textContent = `${currentEquationItem.left ?? ''} ${currentEquationItem.operator ?? ''}`;
 }
 
 
