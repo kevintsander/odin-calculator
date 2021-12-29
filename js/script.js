@@ -141,8 +141,6 @@ function displayCurrentEquation() {
 
 function displayHistory() {
     calcHistoryContainer.textContent = "";
-    let currentOpacity = 1;
-    let opacityDelta = -0.08;
 
     for (let i = calcResultHistory.length - 1; i >= 0 && i > calcResultHistory.length - maxHistoryDisplayItems - 1; i--) {
 
@@ -150,8 +148,6 @@ function displayHistory() {
         
         const historyItemContainer = document.createElement('div');
         historyItemContainer.classList.add('history-item');
-        historyItemContainer.style.opacity = currentOpacity;
-        currentOpacity = Math.min(Math.max(0, currentOpacity + opacityDelta), 1);
 
         const historyEquationContainer = document.createElement('div');
         historyEquationContainer.textContent = `${getMaxLengthValueString(historyItem.left, 8)} ${historyItem.operator} ${getMaxLengthValueString(historyItem.right, 8)} =`;
