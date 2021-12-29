@@ -1,5 +1,6 @@
 // document parts
-const pDisplay = document.querySelector("#calculator-display-container > p");
+const resultDisplay = document.querySelector("#result-display");
+const equationDisplay = document.querySelector("#equation-display");
 const calcButtons = document.querySelectorAll('.calc-button'); // all calculator buttons
 const numButtons = document.querySelectorAll('.num-button');
 const operButtons = document.querySelectorAll('.oper-button');
@@ -37,7 +38,7 @@ function clear() {
 }
 
 function getDisplayNum() {
-    let currentNumDisplay = pDisplay.textContent;
+    let currentNumDisplay = resultDisplay.textContent;
 
     // if last digit is a . add 0 to the end
     if (currentNumDisplay.indexOf('.') === currentNumDisplay.length - 1) {
@@ -55,7 +56,7 @@ function addDisplayDigit(input) {
         calcInputOverwrite = false;
     }
     else {
-        displayNum = pDisplay.textContent;
+        displayNum = resultDisplay.textContent;
     }
 
     // needs to be number or decimal and limit to 12 chars
@@ -73,19 +74,19 @@ function addDisplayDigit(input) {
             // add number to the end
             displayNum = "" + displayNum + input;
         }
-        pDisplay.textContent = displayNum;
+        resultDisplay.textContent = displayNum;
     }
 };
 
 function removeLastDisplayDigit() {
-    let displayNum = pDisplay.textContent;
+    let displayNum = resultDisplay.textContent;
     if (displayNum.length <= 1) {
         displayNum = "0";
     }
     else {
         displayNum = displayNum.slice(0, -1);
     }
-    pDisplay.textContent = displayNum;
+    resultDisplay.textContent = displayNum;
 }
 
 function calculateResult() {
@@ -97,7 +98,7 @@ function calculateResult() {
         calcResultHistory.push(historyElement);
         displayHistory();
 
-        pDisplay.textContent = getMaxLengthValueString(result, calcDisplayMaxChars);
+        resultDisplay.textContent = getMaxLengthValueString(result, calcDisplayMaxChars);
         calcInputOverwrite = true;
 
         calcOperator = null;
@@ -107,7 +108,7 @@ function calculateResult() {
 
 function undolastCalc() {
     if (calcResultHistory.length > 0) {
-        pDisplay.textContent = getMaxLengthValueString(calcResultHistory.pop().result, calcDisplayMaxChars);
+        resultDisplay.textContent = getMaxLengthValueString(calcResultHistory.pop().result, calcDisplayMaxChars);
         displayHistory();
         calcOperator = null;
         calcLeftNum = null;
@@ -254,7 +255,7 @@ memSaveButon.addEventListener('click', () => {
 
 memRecallButton.addEventListener('click', () => {
     if (calcMemoryNum) {
-        pDisplay.textContent = calcMemoryNum;
+        resultDisplay.textContent = calcMemoryNum;
     }
 })
 
