@@ -74,6 +74,7 @@ h1 {
     padding: 0;
     margin: 0;
     font-size: 1vw;
+    flex: 0.3;
 }
 
 #result-display {
@@ -81,6 +82,7 @@ h1 {
     margin: 0;
 
     font-size: 7vmin;
+    flex: 0.7;
 }
 
 #calculator-buttons-container {

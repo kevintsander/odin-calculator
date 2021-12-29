@@ -133,7 +133,9 @@ function undolastCalc() {
 }
 
 function displayCurrentEquation() {
-    equationDisplay.textContent = `${currentEquationItem.left ?? ''} ${currentEquationItem.operator ?? ''}`;
+    let equationText = `${currentEquationItem.left ?? ''} ${currentEquationItem.operator ?? ''}`.trim();
+    equationText = equationText ? equationText : '\u00a0';  // insert white space to keep from collapsing
+    equationDisplay.textContent = equationText;
 }
 
 
