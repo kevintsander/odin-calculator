@@ -14,6 +14,8 @@ const calcHistoryContainer = document.querySelector('#calculator-history-contain
 
 const calcDisplayMaxChars = 12;
 const maxHistoryDisplayItems = 10;
+let currentEquationItem = {};
+
 let calcOperator;
 let calcLeftNum;
 let calcInputOverwrite = true;   //allows display overwrite instead of append
@@ -25,14 +27,15 @@ function setOperator(newOperator) {
     if (calcOperator) {
         calculateResult();
     }
-    calcOperator = newOperator;
-    calcLeftNum = getDisplayNum();
+    currentEquationItem.operator = newOperator;
+    currentEquationItem.left = getDisplayNum();
+    displayCurrentEquation();
+
     calcInputOverwrite = true;
 }
 
 function clear() {
-    calcOperator = null;
-    calcLeftNum = null;
+    currentEquationItem = {};
     calcInputOverwrite = true;
     addDisplayDigit('0');
 }
@@ -90,12 +93,13 @@ function removeLastDisplayDigit() {
 }
 
 function calculateResult() {
-    if (calcOperator && calcLeftNum) {
-        let rightNum = getDisplayNum();
-        let result = operate(calcOperator, calcLeftNum, rightNum);
+    if (currentEquationItem.left && currentEquationItem.operator) {
+        currentEquationItem.right = getDisplayNum();
+        currentEquationItem.result = operate(currentEquationItem.operator, currentEquationItem.left, currentEquationItem.right);
 
-        let historyElement = {leftNum: calcLeftNum, rightNum: rightNum, operator: calcOperator, result: result};
-        calcResultHistory.push(historyElement);
+        calcResultHistory.push(currentEquationItem);
+        currentEquationItem = {};   //reset current equation
+        displayCurrentEquation();
         displayHistory();
 
         resultDisplay.textContent = getMaxLengthValueString(result, calcDisplayMaxChars);
@@ -107,14 +111,28 @@ function calculateResult() {
 }
 
 function undolastCalc() {
-    if (calcResultHistory.length > 0) {
-        resultDisplay.textContent = getMaxLengthValueString(calcResultHistory.pop().result, calcDisplayMaxChars);
-        displayHistory();
-        calcOperator = null;
-        calcLeftNum = null;
-        calcInputOverwrite = false;
+    
+    if (currentEquationItem.left) {
+        // if we have a current equation, display the left num and reset
+        resultDisplay.textContent = currentEquationItem.left;
+        currentEquationItem = {};
     }
+    else if (calcResultHistory.length > 0) {
+        // if we havent started a new equation, remove the last equation from the history, & set display to right
+        let lastEquationItem = calcResultHistory.pop();
+        resultDisplay.textContent = lastEquationItem.right
+        currentEquationItem = {};
+        currentEquationItem.left = lastEquationItem.left
+        currentEquationItem.operator = lastEquationItem.operator;
+    }
+    displayCurrentEquation();
+    calcInputOverwrite = false; // allow overwrite after undo since we might want to change the number
 }
+
+function displayCurrentEquation() {
+    equationDisplay.textContent = `${currentEquationItem.left} ${currentEquationItem.operator}`;
+}
+
 
 function displayHistory() {
     calcHistoryContainer.textContent = "";
@@ -126,7 +144,7 @@ function displayHistory() {
         historyItemContainer.classList.add('history-item');
 
         const historyEquationContainer = document.createElement('div');
-        historyEquationContainer.textContent = `${historyItem.leftNum} ${historyItem.operator} ${historyItem.rightNum} =`;
+        historyEquationContainer.textContent = `${getMaxLengthValueString(historyItem.left, 8)} ${historyItem.operator} ${getMaxLengthValueString(historyItem.right, 8)} =`;
 
         const historyResultContainer = document.createElement('div');
         historyResultContainer.classList.add('history-item-result');

@@ -17,8 +17,18 @@ main {
     background-size: 100%;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+}
+
+h1 {
+    padding: 0;
+    margin: 0;
+    font-family: 'Satisfy', cursive;
+    font-size: 5vw;
+    color: white;
+    text-shadow: 1px 1px 3px black, 0px 0px 0px black;
 }
 
 #calculator-container {
@@ -223,7 +233,7 @@ main {
 
 .history-item {
     margin: 0;
-    padding: 0;
+    padding: 4px;
     height: 10%;
     font-size: 1vw;
     border-top: 1px solid hsla(0, 0%, 0%, 10%);
