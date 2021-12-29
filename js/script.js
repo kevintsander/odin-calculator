@@ -7,6 +7,7 @@ const operButtons = document.querySelectorAll('.oper-button');
 const equalsButton = document.querySelector('#equals-button');
 const decButton = document.querySelector('#decimal-button');
 const clearButton = document.querySelector('#clear-button');
+const backspButton = document.querySelector('#backsp-button');
 const undoButton = document.querySelector("#undo-button");
 const memSaveButon = document.querySelector("#memsave-button");
 const memRecallButton = document.querySelector("#memrecall-button");
@@ -124,8 +125,11 @@ function undolastCalc() {
         currentEquationItem.left = lastEquationItem.left
         currentEquationItem.operator = lastEquationItem.operator;
         displayHistory();
-        
+
         calcInputOverwrite = false; // allow overwrite after undo since we might want to change the number
+    }
+    else {
+        resultDisplay.textContent = '0';
     }
     displayCurrentEquation();
 }
@@ -137,12 +141,17 @@ function displayCurrentEquation() {
 
 function displayHistory() {
     calcHistoryContainer.textContent = "";
+    let currentOpacity = 1;
+    let opacityDelta = -0.08;
+
     for (let i = calcResultHistory.length - 1; i >= 0 && i > calcResultHistory.length - maxHistoryDisplayItems - 1; i--) {
+
         let historyItem = calcResultHistory[i];
-        console.log('here')
         
         const historyItemContainer = document.createElement('div');
         historyItemContainer.classList.add('history-item');
+        historyItemContainer.style.opacity = currentOpacity;
+        currentOpacity = Math.min(Math.max(0, currentOpacity + opacityDelta), 1);
 
         const historyEquationContainer = document.createElement('div');
         historyEquationContainer.textContent = `${getMaxLengthValueString(historyItem.left, 8)} ${historyItem.operator} ${getMaxLengthValueString(historyItem.right, 8)} =`;
@@ -260,6 +269,8 @@ equalsButton.addEventListener('click', calculateResult);
 
 // clear button
 clearButton.addEventListener('click', clear);
+
+backspButton.addEventListener('click', removeLastDisplayDigit);
 
 // undo button
 undoButton.addEventListener('click', undolastCalc);
