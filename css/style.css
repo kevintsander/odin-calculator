@@ -27,7 +27,7 @@ main {
     padding: 2%;
 
     display: grid;
-    grid-template-columns: 8fr 1fr;
+    grid-template-columns: 4fr 1fr;
     grid-template-rows: 1fr 7fr;
     grid-template-areas:
         "display display"
@@ -216,25 +216,30 @@ main {
     grid-area: history;
     text-shadow: 1px 1px 2px hsla(0, 0%, 0%, 80%);
     overflow: hidden;
+    
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .history-item {
     margin: 0;
     padding: 0;
+    height: 10%;
     font-size: 1vw;
-    border-bottom: 1px solid hsla(0, 0%, 0%, 10%);
+    border-top: 1px solid hsla(0, 0%, 0%, 10%);
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .history-item:hover {
-    color: hsl(124, 40%, 80%);
+    color: hsl(48, 100%, 50%);
 }
 
 .history-item-result {
     margin: 0;
     padding: 0;
-    font-size: 2.5vw;
+    font-size: 2vw;
 }

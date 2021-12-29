@@ -12,6 +12,7 @@ const memRecallButton = document.querySelector("#memrecall-button");
 const calcHistoryContainer = document.querySelector('#calculator-history-container');
 
 const calcDisplayMaxChars = 12;
+const maxHistoryDisplayItems = 10;
 let calcOperator;
 let calcLeftNum;
 let calcInputOverwrite = true;   //allows display overwrite instead of append
@@ -91,13 +92,12 @@ function calculateResult() {
     if (calcOperator && calcLeftNum) {
         let rightNum = getDisplayNum();
         let result = operate(calcOperator, calcLeftNum, rightNum);
-        let displayResult = getMaxLengthValueString(result, calcDisplayMaxChars);
 
-        let historyElement = {leftNum: calcLeftNum, rightNum: rightNum, operator: calcOperator, result: result, displayResult: displayResult};
+        let historyElement = {leftNum: calcLeftNum, rightNum: rightNum, operator: calcOperator, result: result};
         calcResultHistory.push(historyElement);
         displayHistory();
 
-        pDisplay.textContent = displayResult;
+        pDisplay.textContent = getMaxLengthValueString(result, calcDisplayMaxChars);
         calcInputOverwrite = true;
 
         calcOperator = null;
@@ -107,7 +107,7 @@ function calculateResult() {
 
 function undolastCalc() {
     if (calcResultHistory.length > 0) {
-        pDisplay.textContent = calcResultHistory.pop().result;
+        pDisplay.textContent = getMaxLengthValueString(calcResultHistory.pop().result, calcDisplayMaxChars);
         displayHistory();
         calcOperator = null;
         calcLeftNum = null;
@@ -117,7 +117,10 @@ function undolastCalc() {
 
 function displayHistory() {
     calcHistoryContainer.textContent = "";
-    for (const historyItem of calcResultHistory) {
+    for (let i = calcResultHistory.length - 1; i >= 0 && i > calcResultHistory.length - maxHistoryDisplayItems - 1; i--) {
+        let historyItem = calcResultHistory[i];
+        console.log('here')
+        
         const historyItemContainer = document.createElement('div');
         historyItemContainer.classList.add('history-item');
 
@@ -126,7 +129,7 @@ function displayHistory() {
 
         const historyResultContainer = document.createElement('div');
         historyResultContainer.classList.add('history-item-result');
-        historyResultContainer.textContent = `${historyItem.displayResult}`;
+        historyResultContainer.textContent = `${getMaxLengthValueString(historyItem.result, 8)}`;
 
         historyItemContainer.appendChild(historyEquationContainer);
         historyItemContainer.appendChild(historyResultContainer);
